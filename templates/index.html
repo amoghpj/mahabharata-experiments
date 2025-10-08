@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gita Annotation</title>
+    <style>
+        body { display: flex; 
+             }
+        verse {
+            display: block;
+            padding: 20px; 
+            width: 70%;
+            align: left;
+            border-right: 1px solid #ccc; 
+            text-align: center; /* Center the text horizontally */
+        }
+
+        annotations {
+            display: block;
+            padding: 20px; 
+            width: 30%;
+            align: right;
+            border-right: 1px solid #ccc; 
+            text-align: center; /* Center the text horizontally */
+        }
+
+
+        /* Styles for annotation text box */
+        #annotation-textbox {
+            background-color: #efefef; /* Light color for the background */
+            border: 2px solid #efefef; /* Solid border with a specified color */
+            border-radius: 5px; /* Optional: round the corners */
+            padding: 10px; /* Padding inside the box */
+            margin: 10px 0; /* Margin above and below the box */
+            align: center;
+            text-align: center;
+        }
+        current-annotation { 
+            flex: 1; 
+            flex-direction: column;
+            display: flex;
+            margin-bottom: 10px; 
+            /* width: 400px; */
+        }
+        referring-annotations { 
+            flex: 1; 
+            flex-direction: column;
+            display: flex;
+            margin-bottom: 10px; 
+            /* width: 400px; */
+        }
+        #controls { 
+            margin-bottom: 20px; 
+        }
+
+        .collapsible {
+            display: none; /* Start hidden */
+            border: 1px solid #ccc; 
+            padding: 10px;
+            margin-top: 10px;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+<script>
+function toggleCollapsible(id) {
+     const collapsibleElement = document.getElementById(id);
+     if (collapsibleElement.style.display === "none" || collapsibleElement.style.display === "") {
+        collapsibleElement.style.display = "block"; // Show
+     } else {
+                 collapsibleElement.style.display = "none"; // Hide
+    }
+ }
+
+// Arrow key functionality
+document.addEventListener('keydown', function(event) {
+    let chapter = parseInt(document.querySelector('input[name="chapter"]').value);
+    let verse = parseInt(document.querySelector('input[name="verse"]').value);
+    
+    const totalChapters = {{ total_chapters }}; // Make sure to pass this data from backend
+    const versesInChapter = {{ verses_in_chapter[chapter] }}; // Pass chapter verse count from backend
+
+    if (event.key === 'ArrowRight') { // Right arrow key
+        verse++;
+        // Check if the verse exists
+        if (verse > versesInChapter) {
+            // Move to the next chapter and reset verse
+            chapter++;
+            verse = 1;
+            // Check if chapter exceeds total chapters
+            if (chapter > totalChapters) {
+                chapter = 1; // Reset to the first chapter
+            }
+        }
+        window.location.href = `?chapter=${chapter}&verse=${verse}`;
+    } else if (event.key === 'ArrowLeft') { // Left arrow key
+        if (verse > 1) {
+            verse--;
+        } else {
+            // Move to the previous chapter (if it exists)
+            chapter--;
+            if (chapter < 1) {
+                chapter = totalChapters; // Reset to the last chapter
+            } else {
+                // Set verse to the last verse of the previous chapter
+                verse = versesInChapter; // You would need to fetch this value for the previous chapter
+            }
+        }
+        window.location.href = `?chapter=${chapter}&verse=${verse}`;
+    }
+});
+<!-- document.addEventListener('keydown', function(event) { -->
+<!--     let chapter = parseInt(document.querySelector('input[name="chapter"]').value); -->
+<!--     let verse = parseInt(document.querySelector('input[name="verse"]').value); -->
+
+<!--     if (event.key === 'ArrowRight') { // Right arrow key -->
+<!--         // Advance to the next verse -->
+<!--         verse++; -->
+<!--         window.location.href = `?chapter=${chapter}&verse=${verse}`; -->
+<!--     } else if (event.key === 'ArrowLeft') { // Left arrow key -->
+<!--         // Go back to the previous verse (if greater than 1) -->
+<!--         if (verse > 1) { -->
+<!--             verse--; -->
+<!--             window.location.href = `?chapter=${chapter}&verse=${verse}`; -->
+<!--         } -->
+<!--     } -->
+<!-- }); -->
+
+// Modal functions
+// function openModal() {
+//     document.getElementById("resultModal").style.display = "block";
+// }
+
+// function closeModal() {
+//     document.getElementById("resultModal").style.display = "none";
+// }
+
+</script>
+</head>
+<body>
+  <div id="verse">
+    
+    <div id="search-container">
+      <form method="GET" action="/">
+        <input type="text" name="search" placeholder="Search Transliteration..." value="{{ search_query }}">
+        <input type="submit" value="Search" onclick="openModal()">
+      </form>
+      
+      {% for _v in search_verses %}
+      <p> {{ _v | safe }}</p>
+      
+      {% endfor %}
+    </div>
+    
+    
+    <h3>Chpapter {{ chapter_number }}, Verse {{ verse_number }}</h3>
+    <p>{{ verse['text_0'] }}</p>
+    <p>{{ verse['text_1'] }}</p>
+    <p><i>{{ verse['transliteration'] }}</i></p>
+    
+    <div id="controls">
+      <form method="GET" action="/">
+        <label for="chapter">Chapter:</label>
+        <input type="number" name="chapter" value="{{ chapter_number }}" min="1" required>
+        <label for="verse">Verse:</label>
+        <input type="number" name="verse" value="{{ verse_number }}" min="1" required>
+        <input type="submit" value="Go">
+      </form>
+    </div>
+    
+    <div id="annotation-textbox">
+      <h4>Your Annotation:</h4>
+      <form method="POST">
+        <textarea name="annotation" rows="5" cols="30">{{ annotation }}</textarea><br>
+        <input type="submit" value="Save Annotation">
+      </form>
+    </div>
+    
+    <h5 onclick="toggleCollapsible('collapsible-notes')" style="cursor: pointer;">Toggle details</h5>
+    <div id="collapsible-notes" class="collabsible">
+      <p>
+        {% for _v in verse["translations"] %}
+        <u>{{ _v["author_name"] | safe }}</u>
+      <p>{{ _v["description"] | safe }}</p>
+      {% endfor %}
+      </p>
+    </div>
+  </div>
+  
+  <div id="annotations">
+    <div id="current-annotation">
+      <h4>Your Annotation for this Verse:</h4>
+      <p>{{ annotation | safe }}</p>
+    </div>
+    
+    <div id="referring-annotations">
+      <h4>Annotations That Refer to This Verse:</h4>
+      {% for key, text in referring_annotations.items() %}
+      <p>{{ text | safe }}</p>
+      {% else %}
+      <p>No annotations refer to this verse.</p>
+      {% endfor %}
+    </div>
+  </div>
+</body>
+</html>
+
