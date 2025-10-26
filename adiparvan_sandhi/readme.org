@@ -1,0 +1,18 @@
+[2025-10-25 Sat]
+Experiments in sandhi engines.
+Currently only implements vidyut.
+
+
+To get vidyut data:
+1. Create data directory
+   #+begin_src bash
+   mkdir data/vidyut_data
+   #+end_src
+2. Descend into the scripts dir
+   #+begin_src bash
+   cd data/vidyut_data
+   #+end_src
+3. Run the =get_vidyut_data.py= script
+   #+begin_src bash
+   python get_vidyut_data.py
+   #+end_src

@@ -92,10 +92,16 @@ def process_verse(chapter, shloka_id):
     for line_tokens in tokens_by_line:
         line = []
         for token in line_tokens:
-            meta = {"text":token.text}
+            meta = {"text": sanscript.transliterate(data=token.text,
+                                                    _from = sanscript.SLP1,
+                                                    _to=sanscript.IAST
+                                                    )}
             for attr in attributes:
                 if hasattr(token.data, attr):
-                    meta[attr] = str(getattr(token.data, attr))
+                    meta[attr] = sanscript.transliterate(data=str(getattr(token.data, attr)),
+                                                    _from = sanscript.SLP1,
+                                                    _to=sanscript.IAST
+                                                    )
                 else:
                     meta[attr] = ""
             line.append(meta)

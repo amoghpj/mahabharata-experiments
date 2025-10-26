@@ -1,0 +1,8 @@
+This is a set of experiments on making interfaces of indic texts. Each directory aims to be a self contained web app with a single purpose which will eventually get integrated.
+
+| Directory                | Description                                                                     |
+|--------------------------+---------------------------------------------------------------------------------|
+| mahabharata_manuscripts  | Parse star passages from John Smith's website and align to the critical edition |
+| adiparvan_sandhi         | Testing various sandhi engines, for on-the-fly sandhi                           |
+| adiparvan_ganguli_reader | Aligning the critical edition with the Ganguli English translation              |
+| gita_annotator           | A richer in-place annotation interface with automatic backlinking               |

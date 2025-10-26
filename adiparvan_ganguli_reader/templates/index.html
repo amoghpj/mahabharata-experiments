@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adiparvan translation</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <style>
+     .grid { 
+       display: grid; 
+       grid-template-columns: 1fr 1fr;   /* two equal columns */ 
+       gap: 16px; 
+     } 
+      outer {
+          display:flex;
+      }
+      original {
+            /* padding: 20px;  */
+            width: 50%;
+          flex: 1;  
+          float:left;
+            /* text-align: center; /\* Center the text horizontally *\/ */
+      }
+      translation {
+          /* padding: 20px;  */
+          width: 50%;
+          flex: 1;  
+          float: right;
+
+          /* text-align: center; /\* Center the text horizontally *\/ */
+      }
+      .underline {
+          text-decoration: underline;
+      }
+    </style>
+
+    <h1>Annotation engine</h1>
+
+    <form id="shloka-form">
+        Chapter: <input type="number" name="chapter" value="{{ chapter }}" required>
+        <button type="submit">Get Chapter</button>
+    </form>
+
+    <div class="grid">
+      <div class="left">{{ original | safe }}</div>  <!-- Display the selected verse -->
+
+      <div class="right">{{ translation | safe }}</div>  <!-- Display the selected verse -->
+    </div>
+</body>
+</html>

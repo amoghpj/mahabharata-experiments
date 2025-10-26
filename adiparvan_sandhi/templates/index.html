@@ -11,14 +11,16 @@
       #tooltip {
           display: none;  /* Initially hidden */
           position: absolute;
-          background-color: green;
-          border: 10px solid #ccc;
-          padding: 100px;
+          background-color:  #ccc;
+          padding: 10px;
           width: 200px;
           position: fixed;
           z-index: 1000;
           box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
       }
+      .underline {
+       text-decoration: underline;
+   }
     </style>
 
     <h1>Annotation engine</h1>
@@ -54,13 +56,18 @@
     {% endfor %}
 </div>
 
-<h2>Annotate</h2>
-<form id="annotation-form">
-  <input type="hidden" name="chapter" id="annotation-chapter" value="{{ chapter }}">
-  <input type="hidden" name="shloka_id" id="annotation-shloka-id" value="{{ shloka_id }}">
-  <textarea name="text" required></textarea>
-  <button type="submit">Save Annotation</button>
-</form>
+<!-- <h2>Annotate</h2> -->
+<!-- <form id="annotation-form"> -->
+<!--   <input type="hidden" name="chapter" id="annotation-chapter" value="{{ chapter }}"> -->
+<!--   <input type="hidden" name="shloka_id" id="annotation-shloka-id" value="{{ shloka_id }}"> -->
+<!--   <textarea name="text" required></textarea> -->
+<!--   <button type="submit">Save Annotation</button> -->
+<!-- </form> -->
+
+<div id="token-info" style="display: none;">
+    <h2>Token Information</h2>
+    <div id="token-content"></div>
+</div>
 
 <script>
   $('#shloka-form').submit(function(event) {
@@ -77,56 +84,37 @@
           });
           $('#tokens').append(`<div>${line}</div>`); // Append the entire line as a new div
       })});
-  //         data.tokens.forEach(token => {
-  //             $('#tokens').append(`<span>${token}</span><br>`);
-  //         });
-  //         $('#annotation-chapter').val($('input[name="chapter"]').val());
-  //         $('#annotation-shloka-id').val($('input[name="shloka_id"]').val());
-  //     });
-  // });
-  // $('#annotation-form').submit(function(event) {
-  //     event.preventDefault();
-  //     $.post('/annotate', $(this).serialize(), function() {
-  //         alert('Annotation saved!');
-  //     });
-  // });
-  </script>
 
-<script>
-  $(document).ready(function() {
-      // $('.tooltip').hover(function(e) {
-    $(document).on('mouseenter', '.tooltip', function(e) {
-       console.log("Tooltip hover event triggered."); // Debug message
-        // Show the tooltip with the corresponding data attributes
-        var lakara = $(this).data('data-lakara');
-        var vacana = $(this).data('data-vacana');
-        var linga = $(this).data('data-linga');
-        var vibhakti = $(this).data('data-vibhakti');
-        console.log(lakara);
-        var content = 
-            "<strong>Lakara:</strong> " + lakara + "<br>" + 
-            "<strong>Vibhakti:</strong> " + vibhakti + "<br>" + 
-            "<strong>Linga:</strong> " + linga + "<br>" + 
-            "<strong>Vacana:</strong> " + vacana;
+   $(document).ready(function() {
+     $(document).on('mouseenter', '.tooltip', function(e) {
+        console.log("Tooltip hover event triggered."); // Debug message
+         // Show the tooltip with the corresponding data attributes
+         var lakara = $(this).data('lakara');
+         var vacana = $(this).data('vacana');
+         var linga = $(this).data('linga');
+         var vibhakti = $(this).data('vibhakti');
+         console.log(lakara);
+         var content = 
+             "<strong>Lakara:</strong> " + lakara + "<br>" + 
+             "<strong>Vibhakti:</strong> " + vibhakti + "<br>" + 
+             "<strong>Linga:</strong> " + linga + "<br>" + 
+             "<strong>Vacana:</strong> " + vacana;
+         $('#tooltip').html(content)
+                      .css({
+                          top: e.pageY + 20,  // Adjust position below the cursor
+                          left: e.pageX + 10
+                      })
+                      .fadeIn(200);  // Show the tooltip
+         $(this).css('text-decoration','underline');
+     });
+     $(document).on('mouseleave', '.tooltip', function() {
+         $('#tooltip').fadeOut(200);  // Hide the tooltip when not hovering
+         $(this).css('text-decoration','none');
 
-        $('#tooltip').html(content)
-                     .css({
-                         top: e.pageY + 10,  // Adjust position below the cursor
-                         left: e.pageX + 10
-                     })
-                     .fadeIn(200);  // Show the tooltip
-    }, function() {
-        $('#tooltip').fadeOut(200);  // Hide the tooltip when not hovering
-    });
-
-    // Ensure the tooltip follows the mouse
-    $(document).mousemove(function(e) {
-        $('#tooltip').css({
-            top: e.pageY + 10,
-            left: e.pageX + 10
-        });
-    });
-});
+     });
+ });
 </script>
+
+
 </body>
 </html>

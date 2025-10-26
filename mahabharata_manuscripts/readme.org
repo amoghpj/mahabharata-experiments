@@ -1,0 +1,37 @@
+[2025-10-26 Sun]
+*WIP* 
+
+Working on ./parse_critical.py
+
+
+* Get Ganguli text from Sacred Texts
+
+#+begin_src bash
+wget https://sacred-texts.com/hin/m01/index.htm
+#+end_src
+
+#+RESULTS:
+http://sacred-texts.com/hin/m01/
+
+
+* Get Critical Edition and Star Passages from John Smith
+
+#+begin_src bash
+wget https://bombay.indology.info/mahabharata/apps/UD/Supp01.txt
+#+end_src
+
+
+#+begin_src bash
+wget https://bombay.indology.info/mahabharata/text/UD/MBh01.txt
+#+end_src
+#+RESULTS:
+
+
+#+begin_src bash
+wget https://bombay.indology.info/mahabharata/text/UD/MBh00.txt
+#+end_src
+
+#+RESULTS:
+
+
+https://bombay.indology.info/mahabharata/statement.html
