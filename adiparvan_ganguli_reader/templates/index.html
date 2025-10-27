@@ -3,40 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Adiparvan translation</title>
+    <title>Mahabharata reader</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
+    <header>
+        <div class="nav">
+          <form method="POST" action="{{ url_for('index') }}"> 
+            <button name="header_prev" class="prev" type="submit" value="{{ chapter }}">Previous</button>
+          </form>
+          <form method="POST" action="{{ url_for('index') }}"> 
+            <button name="header_next" class="next" type="submit" value="{{ chapter }}">Next</button>
+          </form>
+
+        </div>
+    </header>
+
     <style>
      .grid { 
        display: grid; 
        grid-template-columns: 1fr 1fr;   /* two equal columns */ 
        gap: 16px; 
+       font-family: "Optima","Arial", sans-serif;
+
      } 
+     header, footer {
+         padding: 10px;
+         background-color: #f0f0f0;
+     }
+    .nav {
+        display: flex;
+        justify-content: space-between; /* Space the buttons apart */
+    }
+     button {
+         padding: 10px 20px;
+         border: none;
+         background-color: #8c9fbd;
+         color: white;
+         cursor: pointer;
+         font-size: 16px;
+    }
+     button:hover {
+         background-color: #576273; /* Darker blue on hover */
+     }
+
       outer {
           display:flex;
       }
-      original {
-            /* padding: 20px;  */
-            width: 50%;
-          flex: 1;  
-          float:left;
+      .v_num {
+          color: #aa7711;
+          font-size: 12px;
+          float: left;
+          margin-right: 5px;
+      }
+      .original {
+          /*   /\* padding: 20px;  *\/ */
+          /*   width: 50%; */
+          /* flex: 1;   */
+          /* float:left;- */
             /* text-align: center; /\* Center the text horizontally *\/ */
+          font-size: 20px;
+          line-height: 1.8;
+          display: inline-block;
       }
-      translation {
-          /* padding: 20px;  */
-          width: 50%;
-          flex: 1;  
-          float: right;
+      h1 {
+       font-family: "Optima","Arial", sans-serif;
 
-          /* text-align: center; /\* Center the text horizontally *\/ */
       }
+      .translation 
+      {
+       font-family: "Optima","Arial", sans-serif;
+          font-size: 20px;
+      }
+
       .underline {
           text-decoration: underline;
       }
     </style>
 
-    <h1>Annotation engine</h1>
+    <h1>Mahabharata reader</h1>
 
     <form id="shloka-form">
         Chapter: <input type="number" name="chapter" value="{{ chapter }}" required>
@@ -44,9 +89,20 @@
     </form>
 
     <div class="grid">
-      <div class="left">{{ original | safe }}</div>  <!-- Display the selected verse -->
-
-      <div class="right">{{ translation | safe }}</div>  <!-- Display the selected verse -->
+      <div class="item original">{{ original | safe }}</div>  
+     <div class="item translation">{{ translation | safe }}</div>  
     </div>
+    <footer>
+        <div class="nav">
+          <form method="POST" action="{{ url_for('index') }}"> 
+            <button name="footer_prev" class="prev" type="submit" value="{{ chapter }}">Previous</button>
+          </form>
+          <form method="POST" action="{{ url_for('index') }}"> 
+            <button name="footer_next" class="next" type="submit" value="{{ chapter }}">Next</button>
+          </form>
+
+        </div>
+    </footer>
+
 </body>
 </html>
